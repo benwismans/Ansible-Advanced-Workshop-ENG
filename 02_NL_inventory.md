@@ -87,8 +87,8 @@ web2 | SUCCESS => {
 
 **NOTE:** In ons voorbeeld vraagt Ansible om een SSH password. In een geautomatiseerd scenario is het gebruikelijk om met SSH Autorized Keys te werken. In een later lab richten we de clients in met Autorized keys, zodat Ansible direct, zonder wachtwoord, in kan loggen op de clients. Omdat we nog geen Authorized keys hebben ingericht, geven we met ``--ask-pass`` de instructie om een SSH password te vragen.
 
-In de inventory file hebben we de groep [webservers] gedefineerd. De ``ping`` module zal daarom alle hosts controleren. In ons lab hebben we 2 hosts gedefineerd: ``{{ ANSIBLE_CLIENT_1 }}`` en ``{{ ANSIBLE_CLIENT_2 }}``. Beide hosts zullen dus antwoorden. 
+In de inventory file hebben we de groep [webservers] gedefineerd. De ``ping`` module zal daarom alle hosts controleren. In ons lab hebben we 2 hosts gedefineerd: ``<hostname2>`` en ``<hostname3>``. Beide hosts zullen dus antwoorden. 
 
-**TIP:** Het is ook mogelijk om een enkele host te testen. Met ``ansible --ask-pass -m ping web1`` wordt de module alleen maar op de host ``{{ ANSIBLE_CLIENT_1 }}`` uitgevoerd. Let er op dat je de alias gebruikt, in plaats van de hostname.
+**TIP:** Het is ook mogelijk om een enkele host te testen. Met ``ansible --ask-pass -m ping web1`` wordt de module alleen maar op de host ``<hostname2>`` uitgevoerd. Let er op dat je de alias gebruikt, in plaats van de hostname.
 
 Volgende stap: [Lab 3 Playbook - User aanmaken](03_NL_playbook_user.md)
