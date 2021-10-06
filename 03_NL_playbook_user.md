@@ -138,3 +138,4 @@ web2                       : ok=2    changed=0    unreachable=0    failed=0    s
 
 Het playbook zal nu geen changes opleveren. De public key is immers al geïnstalleerd. Mocht je later de public key willen vervangen, kun je simpelweg een nieuwe genereren en deze via Ansible opnieuw deployen. Ansible herkent dat het bestand is gewijzigd en zal daarvoor een change genereren.
 
+Volgende stap: [Lab 4 Playbook - Installatie Apache](04_NL_playbook_apache_installation.md)
