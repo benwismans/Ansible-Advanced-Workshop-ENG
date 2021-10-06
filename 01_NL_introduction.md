@@ -15,22 +15,17 @@ Voor deze workshop heb je nodig:
 * Alle acties worden uitgevoerd vanuit de home directory van de Ansible server (tenzij anders aangegeven).
 * Instructies voor commando's worden vooraf gegaan met een prompt teken ($) en staan in een tekst blok. Dit teken is onderdeel van de opdracht prompt en hoort niet bij het commando (wie kent de dos prompt ``C:\>`` nog?). Bijvoorbeeld (Het commando in het voorbeeld is dus ``ls``):
 
-[source,bash]
-----
-$ ls
-----
+
+  ``$ ls``
   
-* De output wordt ook in een tekstblok weergegeven. Bijvoorbeeld:
-
-[source,bash]
-----
-user01@bastion:~ $ ls -l
-total 3
--rw-r--r-- 1 pi pi   84 Feb 14 13:30 ansible.cfg
--rw-r--r-- 1 pi pi  979 Feb 14 17:07 workshop.yml
-----
-
-NOTE: Bovenstaande is slechts een voorbeeld. De files zijn nog niet aanwezig op de SSH server.
+- De output wordt ook in een tekstblok weergegeven. Bijvoorbeeld:
+  ```
+  user@vm01:~ $ ls -l
+  total 3
+  -rw-r--r-- 1 pi pi   84 Feb 14 13:30 ansible.cfg
+  -rw-r--r-- 1 pi pi  979 Feb 14 17:07 brocade.yml
+  -rw-r--r-- 1 pi pi  884 Feb 14 22:07 cisco.yml
+  ```
 
 Volgende stap: [Lab 2 Inventory file aanmaken](02_NL_inventory.md)
 
