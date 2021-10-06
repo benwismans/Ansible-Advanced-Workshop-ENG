@@ -125,3 +125,5 @@ $ cat foo
 ----  
 +
 TIP: Vergeet niet uit te loggen uit {{ ANSIBLE_CLIENT_1 }}
+  
+Volgende Stap: [Lab 8 Role - Rol aanmaken](08_NL_role_create.md)
