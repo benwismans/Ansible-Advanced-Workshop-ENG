@@ -138,6 +138,6 @@ $ vi templates/haproxy.cfg.j2
 
 ``ansible-playbook loadbalancer.yml``
 
-* Open de URL: http://{{ ANSIBLE_CLIENT_3 }}/ en test of je nu wel van beide servers een antwoord krijgt.
+* Open de URL: http://{{ hostname1 }}/ en test of je nu wel van beide servers een antwoord krijgt.
 
 Volgende Stap: [Lab 7 Vault - Encryptie gebruiken](07_NL_vault.md)
