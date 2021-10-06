@@ -15,8 +15,9 @@ Dit lab is gebaseerd op Ansible 2.9.
 
 ## Extra Labs
 
-E1. [Extra Opdracht 1 - Rolling Upgrade](E1_NL_rolling_updates.md)
-E4. [Extra Opdracht 4 - Troubleshooting](E4_NL_Troubleshooting.md)
+E1. [Extra Opdracht 1 - Rolling Upgrade](E1_NL_rolling_updates.md) 
+
+E4. [Extra Opdracht 4 - Troubleshooting](E4_NL_Troubleshooting.md) 
 
 
 
