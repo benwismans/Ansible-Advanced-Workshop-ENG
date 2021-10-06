@@ -10,20 +10,20 @@ Vault variablen worden door Ansible automatisch ontsleutelt, mits het ``vault pa
 TIP: ansible-vault gebruikt standaard de editor ``vi``. Mocht je liever ``nano`` gebruiken, dan kun je de editor aanpassen door de environment variable ``EDITOR`` te vullen met: ``/bin/nano``. Gebruik hiervoor het commando: ``export EDITOR=/bin/nano``.
 
 * Maak een nieuw bestand:
-+
+
 ``$ ansible-vault create foo``
 
-+
+
 * Bedenk zelf een wachtwoord:
-+
+
 ```
   New Vault password:
   Confirm New Vault password:
 ```
-+
+
 * Zet een geheime boodschap in het bestand en sla deze op (in ``vi`` gaat dat met ``:wq``).
 * Bekijk het bestand:
-+
+
 ```
 $ cat foo
 $ANSIBLE_VAULT;1.1;AES256
@@ -38,25 +38,23 @@ $ANSIBLE_VAULT;1.1;AES256
 ### Task 7.2: Encrypted bestand bewerken
 
 * Edit het bestand:
-+
+
 ``$ ansible-vault edit foo``
-+
+
 * Ansible vault vraagt om het wachtwoord. Alleen als het wachtwoord correct wordt ingevoerd zal de editor openen
-+
+
 ``Vault password:``
 
-+
+
 * Maak een wijziging en sla het bestand weer op.
 
 ### Task 7.3: Encrypted bestand inzien
 
 * Bekijk het bestand:
-+
-[source,lang=bash]
 ``$ ansible-vault view foo``
-+
+
 * Ansible vault vraagt om het wachtwoord. Alleen als het wachtwoord correct wordt ingevoerd zal het bestand weergegeven worden:
-+
+
 ```
 Vault password:
 <inhoud van het bestand>
@@ -65,7 +63,7 @@ Vault password:
 ### Task 7.4: Wachtwoord wijzigen van een encrypted bestand
 
 * Pas het wachtwoord aan:
-+
+
 ```
 $ ansible-vault rekey foo
 Vault password:
@@ -80,32 +78,29 @@ Ansible herkent zelf of een bestand encrypt is en zal deze automatisch decrypten
 
 * Vul je playbook ``workshop.yml`` aan met:
 
-+
 ```
   - name: "Ensure foo is copied and decrypted"
     template:
       src: foo
       dest: /home/{{ ANSIBLE_USER }}/foo 
 ```
-+
+
 * Voer je playbook uit (Let er op dat je de parameter ``--ask-vault-pass`` mee geeft):
-+
+
 ```
 $ ansible-playbook workshop.yml --ask-vault-pass
 ```
-+
+
 * Log in op een client:
-+
+
 ``$ ssh {{ ANSIBLE_CLIENT_1 }}``
-----
-+
+
 * Controleer of het bestand decrypted op je Ansible client ({{ ANSIBLE_CLIENT_1 }}) staat:
-+
+
 ```
 $ cat foo
 <inhoud van het bestand>
 ```  
-+
 **TIP:** Vergeet niet uit te loggen uit {{ ANSIBLE_CLIENT_1 }}
   
 Volgende Stap: [Lab 8 Role - Rol aanmaken](08_NL_role_create.md)
