@@ -74,3 +74,7 @@ TIP: Door de batch size op 1 te zetten wordt het playbook maximaal op 1 webserve
 
 * Open het adres van de loadbalancer in je webbrowser (http://{{ ANSIBLE_CLIENT_3 }}). Ververs een paar keer de pagina, zodat je zeker weet dat beide webservers beschikbaar zijn.
 * Voer het playbook ``update.yml`` uit en ververs regelmatig de pagina van de loadbalancer. Als alles goed is gegaan, blijft de pagina bereikbaar tijdens het updaten.
+
+----
+
+Volgende Stap: [E4. [Extra Opdracht 4 - Troubleshooting](E4_NL_Troubleshooting.md)
