@@ -2,9 +2,7 @@
 In dit (extra) lab staan playbooks met fouten. Vind de fout en los het probleem op!
 
 * ``git.yml``
-+
-[source,role=copypaste]
-----
+```
 ---
 - hosts: all
 
@@ -13,12 +11,10 @@ In dit (extra) lab staan playbooks met fouten. Vind de fout en los het probleem 
     yum:
       name: git
       state: latest
-----
+```
 
 * ``firewall.yml``
-+
-[source,role=copypaste]
-----
+```
 ---
 - hosts: all
   become: true
@@ -34,12 +30,10 @@ In dit (extra) lab staan playbooks met fouten. Vind de fout en los het probleem 
       with_items:
         - http
         - https
-----
+```
 
 * ``user.yml``
-+
-[source,role=copypaste]
-----
+```
 ---
 - hosts: all
 
@@ -49,10 +43,10 @@ In dit (extra) lab staan playbooks met fouten. Vind de fout en los het probleem 
       user: {{ ANSIBLE_USER }}
       state: present
       key: "~/.ssh/id_rsa.pub"
-----
+```
 
 * ``role.yml``
-----
+```
 ---
 - hosts: workshop
   become: true
@@ -67,4 +61,4 @@ In dit (extra) lab staan playbooks met fouten. Vind de fout en los het probleem 
 
     roles:
     - role: ontic.account
-----
+```
