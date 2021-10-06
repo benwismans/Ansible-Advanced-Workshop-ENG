@@ -160,4 +160,4 @@ $ cd ~
 NOTE: Het playbook zal een change opleveren op de ``task`` ``Ensure chrony is configured``. Daardoor zal ook de handler ``Restart chrony`` uitgevoerd worden. De handler wordt altijd aan het eind van het playbook uitgevoerd.
 
 
-
+Volgende Stap: [Lab 9 Role - Templates gebruiken](09_NL_templates.md)
