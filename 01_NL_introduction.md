@@ -34,4 +34,4 @@ total 3
 
 NOTE: Bovenstaande is slechts een voorbeeld. De files zijn nog niet aanwezig op de SSH server.
 
-Volgende stap: [Lab 2 - Inventory file aanmaken](02_NL_inventory.adoc)
+Volgende stap: [Lab 2 - Inventory file aanmaken](02_NL_inventory.md)
