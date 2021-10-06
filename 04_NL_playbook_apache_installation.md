@@ -91,3 +91,5 @@ web2                       : ok=2    changed=1    unreachable=0    failed=0    s
 ----
 
 TIP: De Ansible clients zijn in deze workshop zo geconfigureerd dat sudo niet om een wachtwoord vraagt (``NOPASSWD: ALL`` in de sudoers file). Daarom kunnen we het playbook starten zonder ``privilege escalation password`` (``--ask-become-pass`` of ``-K``). In productie omgevingen is het echter gebruikelijk om sudo met een wachtwoord te starten. Met ``--ask-become-pass`` (of ``-K``) kun je dit wachtwoord aan Ansible doorgeven.
+
+Volgende stap: [Lab 5 Playbook - Configuratie Apache](05_NL_playbook_apache_configuration.md)
