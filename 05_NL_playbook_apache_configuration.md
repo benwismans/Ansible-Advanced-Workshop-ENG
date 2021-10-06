@@ -84,3 +84,4 @@ This is server {{ ANSIBLE_CLIENT_1 }}
 This is server {{ ANSIBLE_CLIENT_2 }}
 ----
 
+Volgende Stap: [Lab 6 Role - HA Proxy](06_NL_role_haproxy.md)
