@@ -2,7 +2,7 @@
 
 Een belangrijk onderdeel voor Ansible is de inventory file. In deze file wordt beschreven hoe de omgeving er uit ziet.
 
-Alle acties worden uitgevoerd in de home directory van de **SSH server** ({{ ANSIBLE_BASTION }}).
+Alle acties worden uitgevoerd in de home directory van de **Ansible server**.
 
 ### Task 2.1: Inventory file aanmaken
 
@@ -19,11 +19,11 @@ $ vi inventory
 
 [source,role=copypaste]
 ----
-[webservers]
-web1 ansible_host={{ ANSIBLE_CLIENT_1 }}
-web2 ansible_host={{ ANSIBLE_CLIENT_2 }}
 [loadbalancer]
-lb ansible_host={{ ANSIBLE_CLIENT_3 }}
+lb ansible_host=localhost
+[webservers]
+web1 ansible_host=<hostname2>
+web2 ansible_host=<hostname3>
 ----
 
 ### Task 2.2: Ansible vertellen waar de inventory file staat
