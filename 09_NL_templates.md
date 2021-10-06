@@ -142,4 +142,4 @@ server 3.europe.pool.ntp.org iburst
 TIP: Merk op dat de nameservers gewijzigd zijn van X.centos.pool.ntp.org naar X.europe.pool.ntp.org
 
 
-
+Volgende Stap: [Extra Opdracht 1 - Rolling Upgrade](E1_NL_rolling_updates.md)
