@@ -5,22 +5,19 @@ Met Ansible is het mogelijk om ``Rolling updates`` uit te voeren. Webservers ach
 **TIP:** In dit lab zul je delen zelf moeten invullen. Kijk terug in eerdere labs hoe de onderdelen van het playbook gemaakt zijn.
 
 * Maak een nieuw playbook ``update.yml`` voor de host groep ``webservers``.
+* Onder de hosts regel moet toegevoegd worden:
+```
+  serial: 1
+```
+
+**NOTE:** Met serial: 1 wordt er maar 1 host tegelijk uitgevoerd.
+
 * Zorg dat ``become`` is geconfigureerd.
 * Maak een task aan om ``status.html`` in /var/www/html/ te zetten. Gebruik de copy module (zie ``Task 5.2: Webpagina index.html installeren``)
 * Zet de volgende content in de copy task:
 ```
 Status OK
 ```
-* Bovenaan je playbook moet toegevoegd worden:
-```
----
-- hosts: webservers
-  become: true
-  become_method: sudo
-  serial: 1
-```
-
-**NOTE:** Met serial: 1 wordt er maar 1 host tegelijk uitgevoerd.
 
 * Voeg toe aan je playbook:
 ```
