@@ -39,14 +39,14 @@ $ rm files/chrony.conf
 * Maak een nieuwe file ``templates/chrony.conf.j2`` en vul deze met:
 ```
 # Record the rate at which the system clock gains/losses time.
-driftfile {{ WORKAROUND_ROLE_VAR1 }}
+driftfile {{ ntp_driftfile }}
 
 # Allow the system clock to be stepped in the first three updates
 # if its offset is larger than 1 second.
-makestep {{ WORKAROUND_ROLE_VAR2 }}
+makestep {{ ntp_makestep }}
 
 # Specify directory for log files.
-logdir {{ WORKAROUND_ROLE_VAR3}}
+logdir {{ ntp_logdir}}
 ```
 * Voor de NTP servers maken we een ``for`` loop. Voeg toe:
 ```
