@@ -21,7 +21,7 @@ TIP: Bekijk ook zeker de documentie van de modules: https://docs.ansible.com/ans
 
   - name: "Ensure firewall is configured"
     firewalld:
-      service: "{{ ITEM }}"
+      service: "{{ item }}"
       permanent: yes
       immediate: yes
       state: enabled
