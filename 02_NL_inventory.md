@@ -44,7 +44,7 @@ Door een ansible.cfg in dezelfde directory te zetten als het playbook (welke we 
 ```
 [defaults]
 inventory = ~/inventory
-remote_user = {{ ANSIBLE_USER }}
+remote_user = <user-on-client>
 host_key_checking = False
 ```
 
