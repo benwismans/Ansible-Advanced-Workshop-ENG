@@ -60,7 +60,7 @@ This is server {{ ansible_fqdn }} and has version 1.0
 
 TIP: Door de batch size op 1 te zetten wordt het playbook maximaal op 1 webserver tegelijk uitgevoerd. Dit zorgt er voor dat er tijdens de rolling upate altijd een webserver beschikbaar is in de load balancer.
 
-* Open het adres van de loadbalancer in je webbrowser (http://{{ ANSIBLE_CLIENT_3 }}). Ververs een paar keer de pagina, zodat je zeker weet dat beide webservers beschikbaar zijn.
+* Open het adres van de loadbalancer in je webbrowser (http://<hostname1>). Ververs een paar keer de pagina, zodat je zeker weet dat beide webservers beschikbaar zijn.
 * Voer het playbook ``update.yml`` uit en ververs regelmatig de pagina van de loadbalancer. Als alles goed is gegaan, blijft de pagina bereikbaar tijdens het updaten.
 
 ----
