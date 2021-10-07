@@ -18,6 +18,12 @@ TIP: Bekijk ook zeker de documentie van de modules: https://docs.ansible.com/ans
       name: httpd
       enabled: true
       state: started
+      
+  - name: "Ensure firewalld service is enabled and started"
+    systemd:
+      name: firewalld
+      enabled: true
+      state: started
 
   - name: "Ensure firewall is configured"
     firewalld:
