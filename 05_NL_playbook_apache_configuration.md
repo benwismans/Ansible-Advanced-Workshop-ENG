@@ -36,7 +36,7 @@ TIP: Bekijk ook zeker de documentie van de modules: https://docs.ansible.com/ans
       - https
 ```
 
-**NOTE:** In de ``firewall`` task gebruiken we een loop ``with_items`` om een lijst met meerdere services op te geven. Met ``with_items`` wordt de task steeds opnieuw uitgevoerd met een onderdeel van deze lijst. Dit onderdeel wordt dan in de variable ``{{ WORKAROUND_ITEM }}`` gezet. Variablen worden in Ansible genoteerd tussen ``{{ dubbele accolades }}``.  Meer info over loops: https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html
+**NOTE:** In de ``firewall`` task gebruiken we een loop ``with_items`` om een lijst met meerdere services op te geven. Met ``with_items`` wordt de task steeds opnieuw uitgevoerd met een onderdeel van deze lijst. Dit onderdeel wordt dan in de variable ``{{ item }}`` gezet. Variablen worden in Ansible genoteerd tussen ``{{ dubbele accolades }}``.  Meer info over loops: https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html
 
 **TIP:** Ansible werkt met een ``desired state``. Als de service apache nog niet gestart is, zal Ansible er voor zorgen dat deze gestart wordt. We hebben immers de ``state`` ``started`` geconfigueerd. Daarnaast is Ansible ``idempotent``. Dat wil zeggen dat Ansible eerst checkt of het wel nodig is om de task uit te voeren. Ansible controleerd daarom eerst of ``httpd`` al gestart is. Alleen als ``httpd`` niet de status ``started`` heeft wordt de taak uitgevoerd.
 
