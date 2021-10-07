@@ -125,7 +125,7 @@ $ vi templates/haproxy.cfg.j2
 ```
 - name: "Ensure firewall is configured"
   firewalld:
-    service: "{{ WORKAROUND_ITEM }}"
+    service: "{{ item }}"
     permanent: yes
     immediate: yes
     state: enabled
