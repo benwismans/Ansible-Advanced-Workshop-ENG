@@ -46,7 +46,7 @@ driftfile "{{ ntp_driftfile }}"
 makestep "{{ ntp_makestep }}"
 
 # Specify directory for log files.
-logdir "{{ ntp_logdir}}"
+logdir "{{ ntp_logdir }}"
 ```
 * Voor de NTP servers maken we een ``for`` loop. Voeg toe:
 ```
