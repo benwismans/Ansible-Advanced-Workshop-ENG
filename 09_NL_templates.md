@@ -39,26 +39,26 @@ $ rm files/chrony.conf
 * Maak een nieuwe file ``templates/chrony.conf.j2`` en vul deze met:
 ```
 # Record the rate at which the system clock gains/losses time.
-driftfile "{{ ntp_driftfile }}"
+driftfile {{ ntp_driftfile }}
 
 # Allow the system clock to be stepped in the first three updates
 # if its offset is larger than 1 second.
-makestep "{{ ntp_makestep }}"
+makestep {{ ntp_makestep }}
 
 # Specify directory for log files.
-logdir "{{ ntp_logdir }}"
+logdir {{ ntp_logdir }}
 ```
 * Voor de NTP servers maken we een ``for`` loop. Voeg toe:
 ```
-"{% for server in ntp_servers %}"
-"server {{ server }} iburst"
-"{% endfor %}"
+{% for server in ntp_servers %}
+server {{ server }} iburst
+{% endfor %}
 ```
 * Voor ``rtcsync`` gebruiken we een ``if``. Voeg toe:
 ```
-"{% if ntp_rtcsync %}"
+{% if ntp_rtcsync %}
 rtcsync
-"{% endif %}"
+{% endif %}
 ```
 * In de ``tasks/main.yml`` moet nu de ``copy`` module aangepast worden naar de ``template`` module. Dit is niet complex, omdat de ``template`` module erg lijkt op de ``copy`` module. Vervang simpelweg ``copy`` door ``template``.
 * Pas daarnaast de filename in de ``src`` aan van ``chrony.conf`` naar ``chrony.conf.j2``
