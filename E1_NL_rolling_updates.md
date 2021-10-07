@@ -11,6 +11,16 @@ Met Ansible is het mogelijk om ``Rolling updates`` uit te voeren. Webservers ach
 ```
 Status OK
 ```
+* Bovenaan je playbook moet toegevoegd worden:
+```
+---
+- hosts: webservers
+  become: true
+  become_method: sudo
+  serial: 1
+```
+
+**NOTE:** Met serial: 1 wordt er maar 1 host tegelijk uitgevoerd.
 
 * Voeg toe aan je playbook:
 ```
