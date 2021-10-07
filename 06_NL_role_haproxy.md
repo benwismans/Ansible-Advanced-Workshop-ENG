@@ -111,10 +111,10 @@ $ vi templates/haproxy.cfg.j2
     cookie SERVERID insert indirect
 ```
 
-* Verwijder ``cookie`` en de laatste {{ WORKAROUND_BACKENDNAME }} uit de server regel (een-na-laatste regel):
+* Verwijder ``cookie`` en de laatste {{ backend.name }} uit de server regel (dus niet de gehele regel!) Wat hieronder staat blijft over:
 
 ```
-    {{ WORKAROUND_BACKENDSERVER }}
+    server {{ backend.name }} {{ backend.address }} check
 ```
 
 * Voeg de firewall configuratie toe aan de task:
