@@ -18,7 +18,7 @@ Status OK
     become: false
     local_action:
       module: uri
-      url: "http://{{ WORKAROUND_HOST }}/status.html"
+      url: "http://{{ ansible_host }}/status.html"
       status_code: 200
 ```
 **TIP:** De bovenstaande taak wordt onder de speciale module ``local_action`` uitgevoerd. Het opvragen van de URL wordt dus vanuit de bastion server uitgevoerd. 
@@ -28,7 +28,7 @@ Status OK
   - name: "Ensure the webserver is disabled in the backend pool"
     haproxy:
       state: disabled
-      host: '{{ WORKAROUND_INVENTORY_HOSTNAME }}'
+      host: '{{ inventory_hostname }}'
       backend: habackend
       socket: /var/lib/haproxy/stats
     delegate_to: lb
@@ -37,7 +37,7 @@ Status OK
 
 * Voeg een task toe die ``index.html`` overschrijft met de volgende content (copy module):
 ```
-This is server {{ WORKAROUND_FQDN }} and has version 1.0
+This is server {{ ansible_fqdn }} and has version 1.0
 ```
 
 * Voeg een task toe met de ``reboot`` module. Er zijn geen extra parameters vereist.
@@ -47,7 +47,7 @@ This is server {{ WORKAROUND_FQDN }} and has version 1.0
     become: false
     local_action:
       module: uri
-      url: "http://{{ WORKAROUND_HOST }}/status.html"
+      url: "http://{{ ansible_host }}/status.html"
       status_code: 200
       return_content: yes
     retries: 10
