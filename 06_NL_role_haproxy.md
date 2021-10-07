@@ -59,9 +59,9 @@ Een beschrijving van de onderdelen van een role vind je terug in de documentatie
   vars:
     haproxy_backend_servers:
     - name: web1
-      address: {{ <hostname2> }}:80
+      address: {<hostname2>:80
     - name: web2
-      address: {{ <hostname3> }}:80
+      address: <hostname3>:80
 
   roles:
   - geerlingguy.haproxy
@@ -82,7 +82,7 @@ IMPORTANT: De role mist de firewall configuratie. We zetten http tijdelijk open 
 
 ### Task 6.3: Werking testen
 
-* Open de URL: http://{{ <hostname1> }}/
+* Open de URL: http://<hostname1>/
 
 NOTE: Je zou verwachten dat je de ene keer de pagina van ``web1`` krijgt en de andere keer van ``web2`` als je de pagina ververst. In HAProxy is door de role echter een cookie geconfigueerd die er voor zorgt dat je telkens op dezelfde server uit komt. Je zult dus met meerdere browsers moeten testen, of de ``incognito`` modus van je browser moeten gebruiken om de werking goed te testen. Of via CLI met curl.
 
