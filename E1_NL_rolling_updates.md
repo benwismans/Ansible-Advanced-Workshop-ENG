@@ -28,7 +28,7 @@ Status OK
   - name: "Ensure the webserver is disabled in the backend pool"
     haproxy:
       state: disabled
-      host: '{{ inventory_hostname }}'
+      host: "{{ inventory_hostname }}"
       backend: habackend
       socket: /var/lib/haproxy/stats
     delegate_to: lb
