@@ -1,16 +1,16 @@
-## Lab 5: Playbook - Apache configureren
+## Lab 5: Playbook - Configuration Apache 
 
-In dit lab gaan we Apache configureren met alles wat nodig is om uiteindelijk web pagina's te laten zien. 
+In this lab we will configure Apache with everything that's needed to actually show web pages.
 
-### Task 5.1: Apache configuratie
+### Task 5.1: Apache configure
 
-Om er voor te zorgen dat Apache gestart wordt tijdens het booten, moet de Apache service ``enabled`` worden. We zorgen er in dezelfde taak ook meteen voor dat de toestand van de apache service op ``started`` wordt gezet.
+To make sure Apache is started during boot, the Apache services needs to be ``enabled``. In the same task, we also make sure that the service is ``started``.
 
-Daarnaast configureren we de firewall zodat de services ``http`` en ``https`` open gezet worden. Dit voeren we ``immediate`` uit, maar we slaan de configuratie ook ``permanent`` op. 
+We will also configure firewalld to open up the ``http`` and ``https`` ports. We do this with the boolean ``immediate`` set, but also save the configuration with ``permanent``.
 
-TIP: Bekijk ook zeker de documentie van de modules: https://docs.ansible.com/ansible/latest/modules/systemd_module.html en https://docs.ansible.com/ansible/latest/modules/firewalld_module.html zodat je begrijpt wat alle parameters doen.
+TIP: Also take a look at the documentation of the modules, so you know what all parameters do:  https://docs.ansible.com/ansible/latest/modules/systemd_module.html and https://docs.ansible.com/ansible/latest/modules/firewalld_module.html.
 
-* Vul het playbook ``webservers.yml`` aan met:
+* Add to the playbook ``webservers.yml``:
 
 ```
   - name: "Ensure apache service is enabled and started"
@@ -36,16 +36,16 @@ TIP: Bekijk ook zeker de documentie van de modules: https://docs.ansible.com/ans
       - https
 ```
 
-**NOTE:** In de ``firewall`` task gebruiken we een loop ``with_items`` om een lijst met meerdere services op te geven. Met ``with_items`` wordt de task steeds opnieuw uitgevoerd met een onderdeel van deze lijst. Dit onderdeel wordt dan in de variable ``{{ item }}`` gezet. Variablen worden in Ansible genoteerd tussen ``{{ dubbele accolades }}``.  Meer info over loops: https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html
+**NOTE:** In the ``firewall`` task we use a loop ``with_items``.  More info about loops: https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html
 
-**TIP:** Ansible werkt met een ``desired state``. Als de service apache nog niet gestart is, zal Ansible er voor zorgen dat deze gestart wordt. We hebben immers de ``state`` ``started`` geconfigueerd. Daarnaast is Ansible ``idempotent``. Dat wil zeggen dat Ansible eerst checkt of het wel nodig is om de task uit te voeren. Ansible controleerd daarom eerst of ``httpd`` al gestart is. Alleen als ``httpd`` niet de status ``started`` heeft wordt de taak uitgevoerd.
+**TIP:** Ansibe works with a ``desired state``. If the Apache service hadn't been started yet, it will be started. As we put in our playbook that the ``state`` should be ``started``. Ansible is ``idempotent``. This means it will first check if the state is in the desired state already. If httpd had already been started, it would just skip the task. 
 
 
-### Task 5.2: Webpagina index.html installeren
+### Task 5.2: Webpage index.html
 
-Om de webservers daadwerkelijk wat te laten zien, maken we een index.html in de default webserver root (``/var/www/html``). Om later onderscheid te kunnen maken tussen web1 en web2 gebruiken we de variable ``{{ FQDN }}``. 
+To actually show a webpage, we create an index.html in the default webserver root (``/var/www/html``). To show the difference between the 2 webservers in a a later state, we use the variable ``{{ ansible_fqdn }}``. 
 
-* Vul het playbook ``webservers.yml`` aan met:
+* Add to the ``webservers.yml``:
 
 ```
   - name: "Ensure index.html is installed"
@@ -54,15 +54,13 @@ Om de webservers daadwerkelijk wat te laten zien, maken we een index.html in de 
       dest: "/var/www/html/index.html"
 ```
 
-**TIP:** Ansible haalt ``facts`` op van elk systeem. Deze ``facts`` bevatten waardevolle variablen over de hosts. De module ``setup`` is verantwoordelijk voor deze ``facts``. Met een ``adhoc`` commando kun je deze facts eenvoudig inzien: ``ansible -m setup web1``. Zie https://docs.ansible.com/ansible/latest/modules/setup_module.html
+**TIP:** Ansible gathers ``facts``of each system. These ``facts`` contain useful values of a host. The module ``setup`` is responsible for these ``facts``. With an ``adhoc`` command you can also see the facts: ``ansible -m setup web1``. See https://docs.ansible.com/ansible/latest/modules/setup_module.html
 
-* Start het playbook. Als alles goed is gegaan, zijn de webservers nu klaar voor gebruik!
+* Start the playbook. The webservers are now ready!
 
 ``$ ansible-playbook webservers.yml``
 
-### Task 5.3: Werking testen
-
-Als het playbook alleen nog maar "ok" meldingen geeft, is het tijd om de werking van de beide webservers te controleren.
+### Task 5.3: Test
 
 ```
 PLAY RECAP ********************************************************************************************************************************************************************************************************************
@@ -70,13 +68,13 @@ web1                       : ok=5    changed=0    unreachable=0    failed=0    s
 web2                       : ok=5    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ```
 
-* Open via je webbrowser de URL van de eerste webserver: http://{{ <hostname2> }}.
-* Controleer of de hostname in de pagina correct is:
+* Open in your webbrowser de URL van de eerste webserver: http://{{ <hostname2> }}.
+* Check if the page is correct:
 
 ``This is server {{ <hostname2> }}``
 
 
-* De tweede webserver: http://{{ <hostname3> }}:
-``This is server {{ ANSIBLE_CLIENT_2 }}``
+* The second webserver as well: http://{{ <hostname3> }}:
+``This is server {{ <hostname3> }}``
 
-Volgende Stap: [Lab 6 Role - HA Proxy](06_NL_role_haproxy.md)
+Next Step: [Lab 6 Role - HA Proxy](06_NL_role_haproxy.md)
