@@ -1,15 +1,15 @@
-## Lab 4: Playbook - Apache installeren
+## Lab 4: Playbook - Install Apache
 
-In dit lab gaan we Apache installeren op de webservers. Apache moet natuurlijk niet op de loadbalancer geïnstalleerd worden. Daarom selecteren we alleen de groep ''webservers'' in het playbook.
+In this lab we will install Apache on the webservers. Apache should NOT be installed on the loadbalancers. That's why we only choose the group ''webservers'' in the playbook.
 
 ### Task 4.1: Webservers playbook
 
-* Maak een nieuw playbook ``webservers.yml``:
+* Create a new playboo ``webservers.yml``:
 
 ``$ vi webservers.yml``
 
 
-* Vul het playbook met:
+* Add to playbook:
 
 ```
 ---
@@ -22,13 +22,13 @@ In dit lab gaan we Apache installeren op de webservers. Apache moet natuurlijk n
       state: latest
 ```
 
-* Test je playbook:
+* Test your playbook:
 
 ``$ ansible-playbook webservers.yml``
 
-CAUTION: Het playbook faalt
+CAUTION: The playbook fails.
 
-* Kijk goed naar de foutmelding:
+* Look good at the error:
 
 ```
 PLAY [webservers] *************************************************************************************************************************************************************************************************************
@@ -46,26 +46,26 @@ web1                       : ok=1    changed=0    unreachable=0    failed=1    s
 web2                       : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
 ```
 
-Als je goed kijkt naar de foutmeldingen, dan lijkt het er op dat er een rechten probleem is. Wanneer je de packages met ``yum`` zou installeren, zou je daar ``sudo`` voor gebruiken. Met Ansible is dat eigenlijk niet anders. Om de packages te installeren, zullen we Ansible moeten instrueren om ``sudo`` te gebruiken.
+If you pay attention to the errors, it seems like there is a permission issue. If you would normaally install the packages with ``yum`` you would use ``sudo`` for this. Within ansible there is no difference. We will instruct Ansible to use ``sudo``.
 
-**TIP:**  Naast ``sudo`` ondersteund Ansible ook andere methoden om meer rechten te verkrijgen. Zie https://docs.ansible.com/ansible/latest/user_guide/become.html.
+**TIP:**  Besides ``sudo``  Ansible also other methods of elevation. See: https://docs.ansible.com/ansible/latest/user_guide/become.html.
 
-### Task 4.2: Task met sudo rechten starten
+### Task 4.2: Start task with sudo permissions
 
-In Ansible is de variable ``become`` verantwoordelijk voor het starten van een playbook met meer rechten. De methode daarvoor stel je in met ``become_method``.
+In Ansible the variable ``become`` is responsible for running a playbook with elevated permissions. You use ``become_method`` for this.
 
-* Bewerk je playbook:
+* Adjust your playbook:
 
 ``$ vi webservers.yml``
 
-* Zet onder ``hosts``:
+* Add under ``hosts``:
 
 ```
   become: true
   become_method: sudo
 ```
 
-* Start het playbook opnieuw en controleer of er nu wel voldoende rechten zijn om packages te installeren.
+* Start the playbook again and check if it works.
 
 ``$ ansible-playbook webservers.yml``
 
@@ -76,6 +76,6 @@ web1                       : ok=2    changed=1    unreachable=0    failed=0    s
 web2                       : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ```
 
-**TIP:** De Ansible clients zijn in deze workshop zo geconfigureerd dat sudo niet om een wachtwoord vraagt (``NOPASSWD: ALL`` in de sudoers file). Daarom kunnen we het playbook starten zonder ``privilege escalation password`` (``--ask-become-pass`` of ``-K``). In productie omgevingen is het echter gebruikelijk om sudo met een wachtwoord te starten. Met ``--ask-become-pass`` (of ``-K``) kun je dit wachtwoord aan Ansible doorgeven.
+**TIP:** Te Ansible clients in this workshop were configured in a way that sudo will not ask for a password (``NOPASSWD: ALL`` in the sudoers file). That's why we can start the playboo with any ``privilege escalation password`` (``--ask-become-pass`` or ``-K``). In production environments it is common to use sudo with a password. 
 
-Volgende stap: [Lab 5 Playbook - Configuratie Apache](05_NL_playbook_apache_configuration.md)
+Next step: [Lab 5 Playbook - Apache Configuration](05_NL_playbook_apache_configuration.md)
