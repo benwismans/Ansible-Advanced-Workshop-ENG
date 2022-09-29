@@ -1,40 +1,36 @@
 ## Lab 6: Playbook - Role - HAProxy
 
-Nu we 2 webservers hebben, is het tijd om een loadbalancer te installeren die er voor zorgt dat beide webservers gebruikt worden. We gaan daarvoor een ``role`` gebruiken. De ansible server waar je op werkt, wordt ook de loadbalancer.
+Now that we have 2 webservers, it is time to install a loadbalancer that will use both these webservers. We will use a ``role`` for this. The ansible server you are working on, will also be the loadbalancer.
 
-Voor bijna elke uitdaging is wel een kant-en-klare rol te vinden op Ansible Galaxy (https://galaxy.ansible.com/). Het nadeel is echter dat er te veel roles te vinden zijn, waardoor het lastig is om de parels te vinden. Let bijvoorbeeld op het aantal downloads en het aantal sterren. 
+For almost every challenge there is a role already created on Ansible Galaxy. The disadvantage of this is that there are too many, which makes it difficult to find the good stuff. You can check the number of downloads and the ranking (in stars). 
 
-**TIP:** Bekijk altijd de broncode van de role die je op Ansible Galaxy hebt gevonden en controleer of deze precies doet wat je zoekt. Indien nodig kun je de role altijd aanpassen.
+**TIP:** You should always check the source code of a role you found on Ansible Galaxy to make sure it does what you want it to do. You can always adjust things if needed. 
 
+For installing HAproxy you could search for ``haproxy``. The role ``geerlingguy.haproxy`` (https://galaxy.ansible.com/geerlingguy/haproxy)  seems to do whwat we want, so we will use that one.
 
-Voor het installeren van HAproxy kun je bijvoorbeeld zoeken op ``haproxy``. De role ``geerlingguy.haproxy`` (https://galaxy.ansible.com/geerlingguy/haproxy)  lijkt precies te doen wat we willen. Deze gaan we installeren via Ansible Galaxy. 
-
-**TIP:**
-Naast het kijken naar het aantal stars of downloads kun je ook kijken of een ontwikkelaar meerdere roles heeft gebouwd. Enkele bekende ontwikkelaars zijn:
-
+**Tip** Next to looking at the stars of downloads you can also check if a developer built multiple roles. The ontic roles might not have a lot of stars, but the developer made dozens of roles. Some well known contributors are:
 * https://galaxy.ansible.com/debops
 * https://galaxy.ansible.com/geerlingguy
 * https://galaxy.ansible.com/Oefenweb
 
+### Task 6.1: Role installatiojn
 
-### Task 6.1: Role installeren
+We are going to use an Ansible Role to create the haproxy setup. Because the tasks are already in the role, we only need to install the role and adjust the parameters.
 
-We gaan een Ansible Role gebruiken om een user account aan te maken.  Doordat de tasks in de role al zijn geschreven hoef je alleen maar de role te installeren en met parameters de role aan te sturen.
-
-* Installeer de role via Ansible Galaxy:
+* Install the role via Ansible Galaxy:
 
 ``$ ansible-galaxy install geerlingguy.haproxy``
 
-De role wordt geïnstalleerd naar de ``.ansible/roles`` directory in je home directory.
+The role will be installed in ``.ansible/roles`` directory in your home directory.
 
-* Controleer of de role is geinstalleerd in ``.ansible/roles``:
+* Check if the role is installed ``.ansible/roles``:
 
 ```
 $ ls ~/.ansible/roles
 geerlingguy.haproxy
 ```
 
-* Bekijk de role:
+* Check the role:
 
 ```
 $ cd ~/.ansible/roles/geerlingguy.haproxy
@@ -42,13 +38,13 @@ $ ls
 LICENSE  README.md  defaults  handlers  meta  tasks  templates  tests
 ```
 
-Een beschrijving van de onderdelen van een role vind je terug in de documentatie van Ansible op: https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html.
+A description of the ports of a role can be found in the documentation of Ansible on: https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html.
 
-**TIP:** Het vervolg van de workshop wordt vanuit je home directory uitgevoerd. Ga terug naar je home directory met het commando: ``$ cd``.
+**Tip:** The remaining part of this workshop will be executed from the homedirectory of the user. So go back with the command ``$ cd``
 
-### Task 6.2: Playbook maken met role
+### Task 6.2: Playbook with the role
 
-* Maak een nieuw playbook ``loadbalancer.yml``:
+* Create a new playbook ``loadbalancer.yml``:
 
 ```
 ---
@@ -67,57 +63,52 @@ Een beschrijving van de onderdelen van een role vind je terug in de documentatie
   - geerlingguy.haproxy
 ```
 
-* Voer het playbook uit:
+* Run the playbook:
 
 ``$ ansible-playbook loadbalancer.yml``
 
-IMPORTANT: De role mist de firewall configuratie. We zetten http tijdelijk open in de firewall met een adhoc commando. Later zullen we de role aanpassen en de firewall configuratie in de role meenemen.
+IMPORTANT: The role misses the firewall configuration. We will quickly open the http service with an adhoc command. 
 
 * Zet http open in de firewall:
 
 ``$ ansible -b -m firewalld -a "service=http state=enabled" loadbalancer``
 
-**NOTE:** Zoek met ``ansible --help`` uit wat de parameters ``-b``, ``-m`` en ``-a`` betekenen
 
-
-### Task 6.3: Werking testen
+### Task 6.3:  Testing
 
 * Open de URL: http://<hostname1>/
 
-NOTE: Je zou verwachten dat je de ene keer de pagina van ``web1`` krijgt en de andere keer van ``web2`` als je de pagina ververst. In HAProxy is door de role echter een cookie geconfigueerd die er voor zorgt dat je telkens op dezelfde server uit komt. Je zult dus met meerdere browsers moeten testen, of de ``incognito`` modus van je browser moeten gebruiken om de werking goed te testen. Of via CLI met curl.
+**NOTE**: You would expect to get a response from ``web1`` and ``web2`` if you refresh the page. HAProxy has a coookie configured so you end up on the same server each time. You can test with different browsers or in ``incognito mode`` or with a ``curl`` command.
 
-Je kunt een adhoc commando gebruiken om httpd te stoppen / starten op de webservers:
-
+You could also use an adhoc command to stop the webserver on web1.
 ``$ ansible -b -m systemd -a "name=httpd state=stopped" web1``
 
-**TIP:** Gebruik het bovenstaande adhoc commando om httpd op ``web1`` of ``web2`` te stoppen of te starten. Controleer de werking via de URL: http://{{ ANSIBLE_CLIENT_3 }}/
+* Make sure both webservers are up and running again!
 
-* Zorg dat beide webservers weer gestart zijn.
+### Task 6.4: Role adjustments
+  
+We would like to delete the cookie functionality out of HAProxy, because we will do a rolling ugprade leter on with Ansible (Lab 8).
 
-### Task 6.4: Role aanpassen
-
-We willen graag de cookie functionaliteit uit de configuratie verwijderen, omdat we later een non-disruptive update gaan uitvoeren met Ansible (zie Lab 8). Daarnaast mist de role de firewall configuratie.
-
-* Bewerk de template ``haproxy.cfg.j2`` om de cookie settings te verwijderen:
+* Adjust the template ``haproxy.cfg.j2`` to delete the cookie settings:
 
 ```
 $ cd ~/.ansible/roles/geerlingguy.haproxy/
 $ vi templates/haproxy.cfg.j2 
 ```
 
-* Verwijder de regel (in het onderdeel ``backend``):
+* Delete the line (in the part ``backend``):
 
 ```
     cookie SERVERID insert indirect
 ```
 
-* Verwijder ``cookie`` en de laatste {{ backend.name }} uit de server regel (dus niet de gehele regel!) Wat hieronder staat blijft over:
+* Delete ``cookie`` and the laatste {{ backend.name }} in the line  (not the complete line!) What should remain is this:
 
 ```
     server {{ backend.name }} {{ backend.address }} check
 ```
 
-* Voeg de firewall configuratie toe aan de task:
+* Add the firewall configuration in the task:
 
 ``$ vi tasks/main.yml``
 
@@ -134,10 +125,10 @@ $ vi templates/haproxy.cfg.j2
   - https
 ```
 
-* Voer het playbook uit
+* Run the playbook uit
 
 ``ansible-playbook loadbalancer.yml``
 
-* Open de URL: http://hostname1/ en test of je nu wel van beide servers een antwoord krijgt.
+* Open the URL: http://hostname1/ and test.
 
-Volgende Stap: [Lab 7 Vault - Encryptie gebruiken](07_NL_vault.md)
+Next Step: [Lab 7 Vault - Encryptie gebruiken](07_NL_vault.md)
