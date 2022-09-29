@@ -1,39 +1,39 @@
-## Lab 8: Role - Zelf bouwen
+## Lab 8: Role - Build One Yourself
 
-In Ansible is het een best-pratice om te werken met roles. Het is daarom goed om te weten hoe je zo'n role zelf kunt bouwen. In dit lab gaan we een role bouwen om ``chrony`` te configureren. 
+In Ansible it is best-practice to work with roles. It's good to know how you can build your own role. We will do that in this lab to build a ``chrony`` role to configure chrony.
 
-NOTE: In RHEL 7 / CentOS 7 is chrony de standaard daemon voor het network time protocol (NTP). Er zijn op internet genoeg artikelen te vinden die het verschil tussen chrone en ntpd uitleggen.
+NOTE: In RHEL 7+ / CentOS 7+  chrony is the standaard daemon for the network time protocol (NTP). 
 
-Een role bestaat uit de volgende onderdelen (directories):
+A role exists of the following parts (directories)
 
-* ``tasks``: Alle taken voor de role.
-* ``handlers``: Bevat de handlers die met ``notify`` uitgevoerd kunnen worden. Wordt veel gebruikt om services te herstarten. Zie https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#task-and-handler-organization-for-a-role voor meer details.
-* ``defaults``: Default variablen voor de role. Omdat default variablen de laagste prioriteit hebben, zijn deze makkelijk te overrulen.
-* ``vars``: Variablen voor de role. Variablen in ``vars`` hebben een hogere prioriteit dan variablen in ``defaults``.
-* ``files``: Bevat files die gebruikt worden door de role. Deze kunnen bijvoorbeeld in de copy module gebruikt worden.
-* ``templates``: Bevat files met variablen. Voor templates wordt Jinja2 als templating taal gebruikt.
-* ``meta``: Bevat metadata voor de role, zoals bijvoorbeeld: Auteur, ondersteunde platformen of afhankelijkheden met andere roles.
+* ``tasks``: All tasks for de role.
+* ``handlers``: Contains halders that are run with ``notify``. It's used a lot to restart services after a change.. See https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#task-and-handler-organization-for-a-role for details.
+* ``defaults``: Default variables for the role. These have the lowest priority, so they are easy to overrule.
+* ``vars``: Variables voor de role. Variables in ``vars`` have a higher priority than variables in ``defaults``.
+* ``files``: Contains files used for the role. These can be used with the ``copy`` module.
+* ``templates``: Contains files with variables. For templates the Jinja2 format is used as templating code. 
+* ``meta``: Contains metadata for the role, like: Author, supporting platforms of dependencies with other roles.
 
-De directories ``tasks``, ``handlers``, ``defaults``, ``vars`` en ``meta`` dienen een file ``main.yml`` te bevatten. In deze file wordt het betreffende onderdeel beschreven. Elke ``main.yml`` begint met ``---``. Ook als de file verder geen inhoud heeft.
+The directories ``tasks``, ``handlers``, ``defaults``, ``vars`` and ``meta`` ned to contain a file ``main.yml``. That file contains the actual code of every part. Every ``main.yml`` starts with ``---``. Even if there is nothing else in the file.
 
 ```
 ---
 ```
 
-### Task 8.1: Lege rol aanmaken
+### Task 8.1: Creating an empty role
 
-Met het commando ``ansible-galaxy init --offline <rolename>`` maak je een skelet aan voor de nieuwe role.
+With the command ``ansible-galaxy init --offline <rolename>`` you can create a skeleton for your new role. 
 
-NOTE: Roles worden default in ``/etc/ansible/roles`` of ``~/.ansible/roles/`` (in je home directory) gezet.
+NOTE: Roles will be place by default in ``/etc/ansible/roles`` or ``~/.ansible/roles/`` (in your home directory).
 
-* Maak een nieuwe role aan:
+* Create a new role :
 
 ```
 $ cd ~/.ansible/roles/
 $ ansible-galaxy init --offline chrony
 ```
 
-* Met ``find`` krijg je een mooi overzicht van alle directories en files in het skelet:
+* With ``find`` you can get an overview of the files in your skeleton directory:
 ```
 $ find chrony
 chrony
@@ -55,11 +55,11 @@ chrony/vars
 chrony/vars/main.yml
 ```
 
-### Task 8.2: Handler file maken
+### Task 8.2: Handler file
 
-In de file ``handlers/main.yml` wordt de handler gedefinieerd. Een ``handler`` wordt alleen uitgevoerd als een task een change uitvoert. Daarom wordt een ``handler`` vaak gebruikt om services te herstarten.
+In the file ``handlers/main.yml`` you can define the handler. A ``handler`` is only run when a task has a change. 
 
-* Vul de file ``handlers/main.yml`` met:
+* Add to the file ``handlers/main.yml``:
 ```
 ---
 - name: Restart chrony
@@ -67,22 +67,22 @@ In de file ``handlers/main.yml` wordt de handler gedefinieerd. Een ``handler`` w
     name: chronyd
     state: restarted
 ```
-**TIP:** Deze handler herstart ``chronyd`` wanneer de task, die de handler aanroept, een wijziging oplevert.
+**TIP:** This handler restarts ``chronyd`` when the taks has a change.  
 
-### Task 8.3: Default variables definiëren
+### Task 8.3: Default variables 
 
-De default variablen worden in de file ``defaults/main.yml`` gezet. Wanneer je een bepaalde service installeert en configureert, is het gebruikelijk om de naam van de service in een default variable te zetten. Daardoor kun je de role later nog makkelijk hergebruiken. Je hoeft immers alleen de variable in ``defaults/main.yml`` aan te passen. De task hoef je dan nauwelijks te bewerken.
+The default variables are in  ``defaults/main.yml`` gezet. If you install a service and configure it, it is common to put that name in a default variable so you can reuse it again.
 
-* Zet de volgende variablen in de file ``defaults/main.yml``:
+* Add the following  in the file ``defaults/main.yml``:
 ```
 ---
 chrony_package: chrony
 chrony_service: chronyd
 ```
 
-### Task 8.4: Config file maken
+### Task 8.4: Config file 
 
-* Maak een nieuwe file ``files/chrony.conf`` en vul deze met:
+* Creat a new file ``files/chrony.conf``:
 ```
 # Use these NTP servers:
 server 0.centos.pool.ntp.org iburst
@@ -106,9 +106,9 @@ logdir /var/log/chrony
 
 ### Task 8.5: Tasks
 
-De laatste stap is het aanmaken van de tasks. Dit werkt vergelijkbaar met de ``tasks`` van een ``playbook``.
+The last step is to  add the tasks. This is comparible with the ``tasks`` in a ``playbook``.
 
-* Bewerk de file ``tasks/main.yml``:
+* Adjust the file ``tasks/main.yml``:
 ```
 ---
 - name: Ensure chrony is installed
@@ -128,20 +128,18 @@ De laatste stap is het aanmaken van de tasks. Dit werkt vergelijkbaar met de ``t
     enabled: yes
 ```
 
-**TIP:** De regel ``notify: Restart chrony`` zorgt er voor dat de handler uitgevoerd wordt als de config file gewijzigd is.
+**TIP:** This line ``notify: Restart chrony`` makes sure the right handler is run after a change.
 
 ### Task 8.6: Playbook
 
-* Maak een nieuw playbook ``chrony.yml`` om de role uit te voeren. Kijk terug in link:06_NL_role_haproxy[Lab 6 Role - HAProxy] hoe je een playbook met een role maakt.
+* Create a new playbook ``chrony.yml`` to run the role. Look back in link:06_NL_role_haproxy[Lab 6 Role - HAProxy] how to create a playbook with a role.
 
-**[NOTE]**
-Je was bezig in de directory ``~/.ansible/roles``. Let er op dat je eerst weer naar je home directory gaat voordat je het playbook aanmaakt.
 ```
 $ cd ~
 ```
-* Voer het playbook uit
+* Run the playbook 
 
-**NOTE:** Het playbook zal een change opleveren op de ``task`` ``Ensure chrony is configured``. Daardoor zal ook de handler ``Restart chrony`` uitgevoerd worden. De handler wordt altijd aan het eind van het playbook uitgevoerd.
+**NOTE:** The playbook will have a change on the ``task`` ``Ensure chrony is configured``. Therefor the ``Restart chrony`` will be executed. The handler is always run at the end of the playbook.
 
 
-Volgende Stap: [Lab 9 Role - Templates gebruiken](09_NL_templates.md)
+Next Step: [Lab 9 Role - Templates ](09_NL_templates.md)
