@@ -1,48 +1,57 @@
-## Lab 3: Playbook - User configureren
+## Lab 3: Playbook - User configuration
 
-Een playbook is een beschrijving hoe een systeem ingericht zou moeten zijn. Dit playbook bestaat uit een lijst met stappen. Elke stap controleert de huidige toestand en past deze, indien nodig, aan. Komt het systeem al overeen met de beschrijving van de stap, dan doet Ansible niets.
+A playbook is a description of how a system should be configured. This playbook contains a list of steps. Every step checks the current condition and adjusts it, if necessary. If the system already matches the description of the step, Ansible does nothing. We call this idempotent.
 
-**TIP:** Probeer het playbook zo in te richten dat er geen changes meer worden gemaakt, wanneer het playbook voor de 2e maal uitgevoerd wordt. Daarnaast is het gebruikelijk om een playbook zodanig te maken dat deze meerdere malen uitgevoerd kan worden, zonder dat dit problemen geeft.
+**Tip:** Try to create your playbook so no changes are made anymore, when the playbook is run for the 2nd time. It's usual to run a playbook multiple times without giving any issues.
 
-In dit lab maken we een playbook voor het installeren van de public key voor SSH. Na het installeren van deze public key kun je met de private key (dus zonder wachtwoord) inloggen op de Ansible clients.
+In this lab we create a playbook for installing the public key for SSH. After the installation of the public key, you can logon with your private key (without password) on the client system.
 
-**NOTE:** In een productie omgeving levert het een beveiligings risico op, wanneer er geen Passphrase is geconfigueerd op de Private key. Het is daarom niet aan te raden om Private keys zonder een Passprhase te gebruiken in een productie omgeving. Om dit lab minder complex te maken, is de Passphrase voor de Private key leeg gelaten.
+**Tip:** In a production environment logging in with a private key without passphrase would mean a security risk. It's not advisable to use this setup in a production environment. But to make this lab less complex, we decided to do it anyway. In a production ansible environment, you can encrypt your passwords and passphrases with ansible vault (shown in a later lab) or ansible tower (which is also one big vault).
 
-### Task 3.1:  Playbook aanmaken
+### Task 3.1:  Playbook creation
 
-In het playbook gaan we de module ``authorized_key`` gebruiken om de SSH public key op de Ansible clients te installeren. In de verborgen directory .ssh is de public en de private key voor geïnstalleerd.
+In the playbook we will use the module ``authorized_key`` to install the SSH public key on the Client. The .ssh directory contains the private and public key created in Lab 0.
 
-* Maak het playbook aan:
+* Check if the SSH keys are installed (see lab 0, preparations):
 
-``$ vi workshop.yml``
+  ``$ ls ~/.ssh/``
 
-* Vul het playbook met:
+  ```
+  id_rsa  id_rsa.pub
+  ```
 
-```
----
-- hosts: all
+The file ``id_rsa.pub`` is the public key. The file ``id_rsa`` is the private key. 
+ 
+* Create the playbook:
 
-  tasks:
-  - name: "Ensure authorized key is installed for user {{ ANSIBLE_USER }}"
-    authorized_key:
-      user: {{ ANSIBLE_USER }}
-      state: present
-      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-```
+  ``$ vi workshop.yml``
+  
+* Add to your playbook (watch your usernumber!):
+
+  ```
+  ---
+  - hosts: workshop
+
+    tasks:
+    - name: "Ensure authorized key is installed for user"
+      authorized_key:
+        user: userXX
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+  ```
+
+**Tip:** Playbooks work with Yaml files. Yaml works with indents of 2 spaces. If you ever worked with python, you will recognize this.
+
+The playbook should be fairly readble. Even without Ansible knowledge, you should be able to guess what this playbook will do. The summary:
+* The playbook will be executed on all clients in the group ``workshop``.
+* Het playbook contains one single task.
+* After ``name`` is a description of the task.
+* Te module ``authorized_key`` is used to install  the ``key`` for ``user`` ``userXX``. The file ``~/.ssh/id_rsa.pub`` is used for this.
+
+In the documentation you can find more details about the module ``authorized_key``. See https://docs.ansible.com/ansible/latest/modules/authorized_key_module.html.
 
 
-**TIP:** Playbooks werken met Yaml files. Voor de werking van Yaml files is het belangrijk dat het inspringen van de regels nauwkeurig gebeurd. Het is gebruikelijk om dit met 2 (of 4) spaties te doen. Als je ooit met Python hebt gewerkt, dan zul je dit herkennen. 
-
-Als het goed is, valt op dat het playbook redelijk leesbaar is. Zelfs zonder kennis van Ansible is redelijk in te schatten wat dit playbook uit zal voeren. De samenvatting:
-
-* Het playbook zal uitgevoerd worden op alle clients.
-* Het playbook bestaat uit een enkele taak.
-* Met ``name`` wordt beschreven wat deze taak doet.
-* De module ``authorized_key`` wordt gebruikt om voor de ``user`` ``{{ ANSIBLE_USER }}`` de ``key`` te installeren. Daarbij wordt de file ``.ssh/id_rsa.pub`` gebruikt.
-
-**TIP:** In de documentatie vind je meer details over de module ``authorized_key``. Zie https://docs.ansible.com/ansible/latest/modules/authorized_key_module.html.
-
-### Task 3.2: Het playbook starten
+### Task 3.2: Run the playbook
 
 Om het playbook uit te voeren gebruiken we het commando: ``ansible-playbook``:
 
@@ -70,11 +79,11 @@ web1                       : ok=2    changed=1    unreachable=0    failed=0    s
 web2                       : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ```
 
-### Task 3.3: Het playbook nogmaals starten
+### Task 3.3: Running the playbook again
 
-Omdat nu de Authorized key voor SSH op de Ansible clients is geïnstalleerd, kun je zonder wachtwoord inloggen op een Ansible client.
+Because the authorized key is installed, you can login to the system without password.
 
-* Controleer of je zonder wachtwoord in kunt loggen:
+* Check the connection without password (replace ``<hostname>`` with the hostname of your client):
 
 ``$ ssh -l {{ ANSIBLE_USER }} {{ ANSIBLE_CLIENT_1 }}``
 
@@ -85,7 +94,7 @@ Last login: Wed Jun 19 09:43:20 2019 from 13.94.128.79
 ```
 
 
-* Log direct weer uit met ``exit``:
+* Log out again with ``exit``:
 
 ``$ exit``
 
@@ -95,7 +104,7 @@ logout
 Connection to {{ ANSIBLE_CLIENT_1 }} closed.
 ```
 
-* Start het playbook, maar zonder de parameter ``--ask-pass``:
+* Start the playbook, but without the parameter ``--ask-pass``:
 
 ``$ ansible-playbook workshop.yml``
 
@@ -120,6 +129,6 @@ web1                       : ok=2    changed=0    unreachable=0    failed=0    s
 web2                       : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ```
 
-Het playbook zal nu geen changes opleveren. De public key is immers al geïnstalleerd. Mocht je later de public key willen vervangen, kun je simpelweg een nieuwe genereren en deze via Ansible opnieuw deployen. Ansible herkent dat het bestand is gewijzigd en zal daarvoor een change genereren.
+The playbook will have no changes, as the public key is already installed. If you want to replace the public key later, all you have to do is generate a new one, and run the playbook. Ansible will notice the difference in the files and will change the file.
 
-Volgende stap: [Lab 4 Playbook - Installatie Apache](04_NL_playbook_apache_installation.md)
+Next stp: [Lab 4 Playbook - Apache Installation ](04_NL_playbook_apache_installation.md)
