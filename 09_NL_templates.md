@@ -1,4 +1,4 @@
-## Lab 9: Role - Templates
+## Lab 9: Role - Templates (not translated yet from dutch to english)
 
 Voor configfiles is het gebruikelijk om een template te maken. Voor templates wordt ``jinja2`` gebruikt. Dit is een taal welke in Python gebruikt wordt voor templates. Zie http://jinja.pocoo.org/.
 
