@@ -1,31 +1,28 @@
-## Introductie
+## Introduction
 
-Welkom bij de Ansible Advanced Workshop. In deze workshop gaan we een loadbalancer met 2 webservers inrichten. Vervolgens gaan we een Ansible playbook maken om deze omgeving automatisch, zonder onderbreking, te updaten.
+Welcome to the Ansible Advanced Workshop. In this workshop we will set up a load balancer with 2 web servers. Also, we will create an Ansible playbook to automatically update this environment without interruptions.
 
-### Benodigdheden
+### Requirements
+For this workshop, you will need:
 
-Voor deze workshop heb je nodig:
+* Laptop with a SSH client (for example putty: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
+* A Linux Server with SSH connection
+* Local user on the VM
+* Root permissions on the VM
 
-* Laptop met een SSH client (bijvoorbeeld putty: https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
-* Een Linux server met SSH toegang en Ansible Server geinstalleerd. 
-* Twee basis Linux servers.
-
-### Uitvoering
-
-* Alle acties worden uitgevoerd vanuit de home directory van de Ansible server (tenzij anders aangegeven).
-* Instructies voor commando's worden vooraf gegaan met een prompt teken ($) en staan in een tekst blok. Dit teken is onderdeel van de opdracht prompt en hoort niet bij het commando (wie kent de dos prompt ``C:\>`` nog?). Bijvoorbeeld (Het commando in het voorbeeld is dus ``ls``):
-
+## Execution
+- All actions will be done from the user's home directory on the 1st VM (unless otherwise mentioned)
+- Instructions for commands will be preceded with a promot sign ($) and in a text block. This sign is for of the prompt and does not belong to the actual command. (The command in the example is ``ls``):
 
   ``$ ls``
   
-- De output wordt ook in een tekstblok weergegeven. Bijvoorbeeld:
+- The output is alsow shown in a text block. For example:
   ```
   user@vm01:~ $ ls -l
-  total 3
-  -rw-r--r-- 1 pi pi   84 Feb 14 13:30 ansible.cfg
-  -rw-r--r-- 1 pi pi  979 Feb 14 17:07 brocade.yml
-  -rw-r--r-- 1 pi pi  884 Feb 14 22:07 cisco.yml
+  total 0
+  ..
+  .
   ```
 
-Volgende stap: [Lab 2 Inventory file aanmaken](02_NL_inventory.md)
+Next step: [Lab 2 Inventory file](02_NL_inventory.md)
 
